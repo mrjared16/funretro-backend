@@ -13,11 +13,11 @@ interface RequestWithUser extends Request {
 }
 
 interface RequestWithToken extends Request {
-    token: PayloadDto
+    user: PayloadDto
 }
 
 interface PayloadDto {
-    sub: string;
+    userId: string;
     username: string
 }
 
