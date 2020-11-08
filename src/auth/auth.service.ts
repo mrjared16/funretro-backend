@@ -1,3 +1,6 @@
+import { forwardRef } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
+import { RequestWithToken } from 'src/auth/auth.dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -17,7 +20,7 @@ export class AuthService {
     getToken({ username, id }: UserModel) {
         const payload: PayloadDto = {
             username,
-            sub: id
+            userId: id
         };
 
         return {
@@ -52,7 +55,7 @@ export class AuthService {
     }
 
     async register(registrationData: RegisterDto) {
-        const hashedPassword = await this.hash(registrationData.password); 
+        const hashedPassword = await this.hash(registrationData.password);
         const user = await this.userService.findUserByUsername(registrationData.username);
         // console.log({ user });
         if (user != null) {
@@ -68,6 +71,5 @@ export class AuthService {
 
         return newUser;
     }
-
 
 }

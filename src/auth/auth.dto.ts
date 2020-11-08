@@ -13,7 +13,9 @@ interface RequestWithUser extends Request {
 }
 
 interface RequestWithToken extends Request {
-    user: PayloadDto
+    user: PayloadDto;
+    params;
+    body;
 }
 
 interface PayloadDto {
