@@ -11,13 +11,18 @@ export class UserService {
         private userRepository: Repository<User>) {
     }
 
+
+    async findUserByUsername(username: string) {
+        return await this.userRepository.findOne({ where: { username } });
+    }
+
     async createUser(data: UserDto) {
         let newUser = await this.userRepository.create(data);
         // console.log({ newUser, data });
         return await this.userRepository.save(newUser);
     }
 
-    async read(id: number) {
+    async findUserById(id: number) {
         return await this.userRepository.findOne({ where: { id } });
     }
 
