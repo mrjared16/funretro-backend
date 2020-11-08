@@ -1,11 +1,13 @@
 import { User } from './users.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm/dist';
 import { UserDto } from "./users.dto";
+import { RequestWithToken } from 'src/auth/auth.dto';
 
 @Injectable()
 export class UserService {
+
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>) {
@@ -27,7 +29,11 @@ export class UserService {
     }
 
     async updateUser(id: string, newUserInfo: Partial<UserDto>) {
-        await this.userRepository.update({ id }, newUserInfo);
-        return await this.userRepository.findOne({ id });
+        try {
+            await this.userRepository.update({ id }, newUserInfo);
+            return await this.userRepository.findOne({ id });
+        } catch (e) {
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
     }
 }
