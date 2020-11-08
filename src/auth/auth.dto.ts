@@ -12,6 +12,10 @@ interface RequestWithUser extends Request {
     user: UserModel;
 }
 
+interface RequestWithToken extends Request {
+    token: PayloadDto
+}
+
 interface PayloadDto {
     sub: string;
     username: string
@@ -20,5 +24,6 @@ interface PayloadDto {
 export {
     RegisterDto,
     RequestWithUser,
-    PayloadDto
+    PayloadDto,
+    RequestWithToken
 };

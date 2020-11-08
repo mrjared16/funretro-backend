@@ -1,4 +1,5 @@
-import { Body, Controller, Param, Patch, Post } from "@nestjs/common";
+import { JWTAuthenticationGuard } from '../auth/jwt/jwt.guard';
+import { Body, Controller, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { UpdateUserDto, UserDto } from "./users.dto";
 import { UserService } from "./users.service";
 
@@ -15,12 +16,13 @@ export class UserController {
     }
 
     @Patch(':id')
+    @UseGuards(JWTAuthenticationGuard)
     updateUser(
         @Param('id') id: string,
         @Body() user: UpdateUserDto
     ) {
         const { ...userData } = user;
-        console.log({ user, id });
+        // console.log({ user, id });
         return this.userService.updateUser(id, userData);
     }
 }
