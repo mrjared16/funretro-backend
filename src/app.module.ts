@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [UserModule, TypeOrmModule.forRoot(), AuthModule],
   controllers: [AppController],
   providers: [AppService],
-  exports: [UserModule]
+  exports: []
 })
 export class AppModule {
   constructor(private connection: Connection) {
