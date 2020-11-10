@@ -5,7 +5,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/users.entity';
-import { PayloadDto, RegisterDto } from './auth.dto';
+import { JWTPayload, RegisterDto } from './auth.dto';
 import * as bcrypt from 'bcryptjs';
 import { create } from 'domain';
 import { UserModel } from 'src/users/users.dto';
@@ -18,7 +18,7 @@ export class AuthService {
     ) { }
 
     getToken({ username, id }: UserModel) {
-        const payload: PayloadDto = {
+        const payload: JWTPayload = {
             username,
             userId: id
         };

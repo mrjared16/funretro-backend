@@ -13,12 +13,20 @@ interface RequestWithUser extends Request {
 }
 
 interface RequestWithToken extends Request {
-    user: PayloadDto;
+    user: JWTPayload;
     params;
     body;
 }
 
-interface PayloadDto {
+interface RequestWithOAuthPayload extends Request {
+    user: OAuthPayload;
+}
+
+interface OAuthPayload {
+    name: string;
+    email: string;
+}
+interface JWTPayload {
     userId: string;
     username: string
 }
@@ -26,6 +34,8 @@ interface PayloadDto {
 export {
     RegisterDto,
     RequestWithUser,
-    PayloadDto,
-    RequestWithToken
+    JWTPayload,
+    RequestWithToken,
+    OAuthPayload,
+    RequestWithOAuthPayload
 };
