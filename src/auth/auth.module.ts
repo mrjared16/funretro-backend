@@ -11,15 +11,13 @@ import { AuthController } from './auth.controller';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { Config } from 'src/shared/config';
 
 @Module({
     imports: [
         forwardRef(() => UserModule),
         PassportModule.register({ defaultStrategy: 'jwt' }),
-        JwtModule.register({
-            secret: 'secret',
-            signOptions: { expiresIn: '3600s' },
-        }),
+        JwtModule.register(Config.getJWTConfig()),
     ],
     providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy],
     controllers: [AuthController],

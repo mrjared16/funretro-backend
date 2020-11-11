@@ -5,9 +5,10 @@ import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { Config } from './shared/config';
 
 @Module({
-  imports: [UserModule, TypeOrmModule.forRoot(), AuthModule],
+  imports: [UserModule, TypeOrmModule.forRoot(Config.getTypeORMConfig()), AuthModule],
   controllers: [AppController],
   providers: [AppService],
   exports: []
