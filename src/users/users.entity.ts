@@ -13,9 +13,7 @@ export abstract class UserEntity {
     })
     email: string;
 
-    @Column({
-        nullable: false
-    })
+    @Column()
     password: string;
 
     @Column()
@@ -27,9 +25,11 @@ export abstract class UserEntity {
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 
-    @BeforeInsert() 
+    @BeforeInsert()
     async hashPassword() {
-        this.password = await this.hash(this.password);
+        if (this.password) {
+            this.password = await this.hash(this.password);
+        }
     }
     private async hash(str: string): Promise<string> {
         return bcrypt.hash(str, 10);
@@ -40,7 +40,7 @@ export abstract class UserEntity {
         return bcrypt.compare(password, hashedPassword);
     }
 
-    public toDTO(): UserDto{
+    public toDTO(): UserDto {
         return null;
     }
 }

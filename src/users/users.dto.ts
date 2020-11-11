@@ -1,5 +1,5 @@
 import { UserEntity } from './users.entity';
-interface UpdateUserDto {
+class UpdateUserDto {
     name: string;
 }
 

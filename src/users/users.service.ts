@@ -26,8 +26,8 @@ export class UserService {
         }
     }
 
-    async findUserById(id: number): Promise<UserDto> {
-        const user = await this.userRepository.findOne({ where: { id } });
+    async findUser(payload: { email?: string, id?: string } = {}) {
+        const user = await this.userRepository.findOne({ where: { payload } });
         return user.toDTO();
     }
 

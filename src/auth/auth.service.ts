@@ -29,8 +29,14 @@ export class AuthService {
         };
     }
 
-    async loginWithGoogleOAuth(payload: OAuthPayload): Promise<UserDto> {
-        return null;
+    async loginWithGoogleOAuth(payload: OAuthPayload) {
+        const { name, email } = payload;
+        const userWithPayloadEmail = this.userService.findUser({ email });
+        if (userWithPayloadEmail) {
+            return userWithPayloadEmail;
+        }
+        const newUser = await this.userService.createUser({ email, name, password: null });
+        return newUser;
     }
 
     async login(user: UserDto) {
