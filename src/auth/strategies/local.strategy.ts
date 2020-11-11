@@ -1,3 +1,4 @@
+import { UserService } from './../../users/users.service';
 import { Config } from 'src/shared/config';
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
@@ -6,12 +7,12 @@ import { AuthService } from '../auth.service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
-    constructor(private authService: AuthService) {
+    constructor(private userService: UserService) {
         super(Config.getPassportLocalStrategyConfig());
     }
 
     // return user
-    async validate(username: string, password: string) {
-        return this.authService.login(username, password);
+    async validate(email: string, password: string) {
+        return this.userService.validateUser(email, password);
     }
 }

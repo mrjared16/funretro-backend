@@ -1,14 +1,14 @@
 import { forwardRef } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
-import { RequestWithToken } from 'src/auth/auth.dto';
+import { OAuthPayload, RequestWithToken } from 'src/auth/auth.dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/users.entity';
-import { JWTPayload, RegisterDto } from './auth.dto';
-import * as bcrypt from 'bcryptjs';
+import { UserEntity } from 'src/users/users.entity';
+import { JWTPayload } from './auth.dto';
+
 import { create } from 'domain';
-import { UserModel } from 'src/users/users.dto';
+import { UserDto, CreateUserDto } from 'src/users/users.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,9 +17,9 @@ export class AuthService {
         private jwtService: JwtService
     ) { }
 
-    getToken({ username, id }: UserModel) {
+    getToken({ email, id }: UserDto) {
         const payload: JWTPayload = {
-            username,
+            email,
             userId: id
         };
 
@@ -29,47 +29,15 @@ export class AuthService {
         };
     }
 
-    async comparePassword(password: string, hashedPassword: string): Promise<boolean> {
-        // return true;
-        return bcrypt.compare(password, hashedPassword);
+    async loginWithGoogleOAuth(payload: OAuthPayload): Promise<UserDto> {
+        return null;
     }
 
-    async hash(str: string): Promise<string> {
-        return await bcrypt.hash(str, 10);
-    }
-
-    async login(username: string, pass: string): Promise<UserModel> {
-        try {
-            const user = await this.userService.findUserByUsername(username);
-            const isPasswordMatching = await this.comparePassword(pass, user.password);
-            if (!isPasswordMatching) {
-                throw new HttpException('Wrong username or password ', HttpStatus.BAD_REQUEST);
-            }
-
-            const { password, ...userWithoutPassword } = user;
-
-            return userWithoutPassword;
-        } catch (error) {
-            throw new HttpException('Wrong username or password ', HttpStatus.BAD_REQUEST);
+    async login(user: UserDto) {
+        if (user == null) {
+            return;
         }
-    }
-
-    async register(registrationData: RegisterDto) {
-        const hashedPassword = await this.hash(registrationData.password);
-        const user = await this.userService.findUserByUsername(registrationData.username);
-        // console.log({ user });
-        if (user != null) {
-            throw new HttpException('Username already exists', HttpStatus.BAD_REQUEST);
-        }
-
-        const createdUser = await this.userService.createUser({
-            ...registrationData,
-            password: hashedPassword
-        });
-
-        const { password, ...newUser } = createdUser;
-
-        return newUser;
+        return this.getToken(user);
     }
 
 }

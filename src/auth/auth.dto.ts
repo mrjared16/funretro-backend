@@ -1,15 +1,7 @@
-import { UserModel } from "src/users/users.dto";
-
-
-interface RegisterDto {
-    username: string,
-    name: string,
-    password: string,
-    // repeatPassword: string,
-}
+import { UserDto } from "src/users/users.dto";
 
 interface RequestWithUser extends Request {
-    user: UserModel;
+    user: UserDto;
 }
 
 interface RequestWithToken extends Request {
@@ -28,14 +20,13 @@ interface OAuthPayload {
 }
 interface JWTPayload {
     userId: string;
-    username: string
+    email: string;
 }
 
 export {
-    RegisterDto,
     RequestWithUser,
-    JWTPayload,
     RequestWithToken,
+    RequestWithOAuthPayload,
+    JWTPayload,
     OAuthPayload,
-    RequestWithOAuthPayload
 };
