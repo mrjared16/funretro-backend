@@ -1,6 +1,5 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcryptjs';
-import { UserDto } from "./users.dto";
 
 @Entity('user')
 export abstract class UserEntity {
@@ -13,7 +12,7 @@ export abstract class UserEntity {
     })
     email: string;
 
-    @Column()
+    @Column({ nullable: true })
     password: string;
 
     @Column()
@@ -38,9 +37,5 @@ export abstract class UserEntity {
     public static async comparePassword(password: string, hashedPassword: string): Promise<boolean> {
         // return true;
         return bcrypt.compare(password, hashedPassword);
-    }
-
-    public toDTO(): UserDto {
-        return null;
     }
 }

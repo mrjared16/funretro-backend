@@ -14,21 +14,20 @@ export class UserService {
     }
 
     async validateUser(email: string, password: string): Promise<UserDto> {
-        try {
-            const user = await this.userRepository.findOne({ where: { email } });
-            const isPasswordMatching = await UserEntity.comparePassword(password, user.password);
-            if (!isPasswordMatching) {
-                throw new HttpException('Wrong email or password ', HttpStatus.BAD_REQUEST);
-            }
-            return user.toDTO();
-        } catch (error) {
+        const user = await this.userRepository.findOne({ where: { email } });
+        if (!user) {
             throw new HttpException('Wrong email or password ', HttpStatus.BAD_REQUEST);
         }
+        const isPasswordMatching = await UserEntity.comparePassword(password, user.password);
+        if (!isPasswordMatching) {
+            throw new HttpException('Wrong email or password ', HttpStatus.BAD_REQUEST);
+        }
+        return UserDto.EntityToDTO(user);
     }
 
     async findUser(payload: { email?: string, id?: string } = {}) {
-        const user = await this.userRepository.findOne({ where: { payload } });
-        return user.toDTO();
+        const user = await this.userRepository.findOne({ where: payload });
+        return UserDto.EntityToDTO(user);
     }
 
     async createUser(data: CreateUserDto): Promise<UserDto> {
@@ -41,7 +40,7 @@ export class UserService {
 
         let newUser = await this.userRepository.create({ email, name, password });
         await this.userRepository.save(newUser);
-        return newUser.toDTO();
+        return UserDto.EntityToDTO(newUser);
     }
 
     async updateUser(id: string, newUserInfo: UpdateUserDto): Promise<UserDto> {
@@ -49,7 +48,7 @@ export class UserService {
             await this.userRepository.update({ id }, newUserInfo);
 
             const user = await this.userRepository.findOne({ id });
-            return user.toDTO();
+            return UserDto.EntityToDTO(user);
         } catch (e) {
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }

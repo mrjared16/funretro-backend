@@ -31,7 +31,7 @@ export class AuthService {
 
     async loginWithGoogleOAuth(payload: OAuthPayload) {
         const { name, email } = payload;
-        const userWithPayloadEmail = this.userService.findUser({ email });
+        const userWithPayloadEmail = await this.userService.findUser({ email });
         if (userWithPayloadEmail) {
             return userWithPayloadEmail;
         }
@@ -39,7 +39,7 @@ export class AuthService {
         return newUser;
     }
 
-    async login(user: UserDto) {
+    login(user: UserDto) {
         if (user == null) {
             return;
         }

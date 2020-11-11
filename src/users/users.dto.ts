@@ -14,13 +14,12 @@ class UserDto {
     id: string;
     email: string;
     name: string;
-    created_at: Date;
-    updated_at: Date;
-    static toEntity(userDto: UserDto): UserEntity {
-        return null;
-    }
-    static toDTO(userEntity: UserEntity): UserDto {
-        return null;
+    static EntityToDTO(userEntity: UserEntity): UserDto {
+        if (userEntity == null)
+            return null;
+        const { id, email, name } = userEntity;
+        let userDto: UserDto = { id, email, name };
+        return userDto;
     }
 }
 

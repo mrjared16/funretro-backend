@@ -5,7 +5,7 @@ import { Body, Get, HttpCode, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Controller, Request, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { RegisterDto, RequestWithUser, RequestWithOAuthPayload } from './auth.dto';
+import { RequestWithUser, RequestWithOAuthPayload } from './auth.dto';
 import { CreateUserDto } from 'src/users/users.dto';
 
 @Controller('auth')
@@ -17,7 +17,7 @@ export class AuthController {
 
     @Post('register')
     async register(@Body() registrationData: CreateUserDto) {
-        return this.userService.createUser(registrationData);
+        return await this.userService.createUser(registrationData);
     }
 
     @HttpCode(200)

@@ -18,7 +18,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             name: displayName,
             email: emails[0].value
         }
-        
+
         const user: UserDto = await this.authService.loginWithGoogleOAuth(userPayload);
         callback(null, user);
     }

@@ -9,7 +9,6 @@ export class DACAuthenticationGuard implements CanActivate {
         const { user, params, body } = request;
         const { userId } = user;
         const { id = '' } = { ...params, ...body };
-        // console.log({ user, params, body, id });
         return userId === id;
     }
 }

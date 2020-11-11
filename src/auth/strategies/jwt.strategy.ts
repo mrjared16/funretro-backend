@@ -9,7 +9,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor() {
         super(Config.getPassportJWTStrategyConfig());
     }
-    // userid vs payload
+
     async validate({ userId, email }: JWTPayload) {
         return { userId: userId, email: email };
     }
