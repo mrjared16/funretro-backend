@@ -1,11 +1,11 @@
 import { forwardRef } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
-import { OAuthPayload, RequestWithToken } from 'src/auth/auth.dto';
+import { OAuthPayload, RequestWithToken } from 'src/auth/auth.interface';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from 'src/users/users.entity';
-import { JWTPayload } from './auth.dto';
+import { JWTPayload } from './auth.interface';
 
 import { create } from 'domain';
 import { UserDto, CreateUserDto } from 'src/users/users.dto';

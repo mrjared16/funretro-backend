@@ -5,8 +5,9 @@ import { Body, Get, HttpCode, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Controller, Request, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { RequestWithUser, RequestWithOAuthPayload } from './auth.dto';
+import { RequestWithUser, RequestWithOAuthPayload } from './auth.interface';
 import { CreateUserDto } from 'src/users/users.dto';
+import { LoginResponse } from './auth.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -23,9 +24,11 @@ export class AuthController {
     @HttpCode(200)
     @UseGuards(LocalAuthenticationGuard)
     @Post('login')
-    async logIn(@Req() request: RequestWithUser) {
+    async logIn(@Req() request: RequestWithUser): Promise<LoginResponse> {
         const { user } = request;
-        return this.authService.login(user);
+        return {
+            response: this.authService.login(user)
+        }
     }
 
 
@@ -36,8 +39,10 @@ export class AuthController {
 
     @Get('oauth/google/callback')
     @UseGuards(GoogleOAuthAuthenticaionGuard)
-    async googleOAuthCallback(@Req() request: RequestWithUser) {
+    async googleOAuthCallback(@Req() request: RequestWithUser): Promise<LoginResponse> {
         const { user } = request;
-        return this.authService.login(user);
+        return {
+            response: this.authService.login(user)
+        }
     }
 }

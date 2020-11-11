@@ -3,7 +3,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm/dist';
 import { CreateUserDto, UpdateUserDto, UserDto } from "./users.dto";
-import { RequestWithToken } from 'src/auth/auth.dto';
+import { RequestWithToken } from 'src/auth/auth.interface';
 
 @Injectable()
 export class UserService {

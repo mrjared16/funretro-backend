@@ -1,16 +1,16 @@
 import { UserEntity } from './users.entity';
-class UpdateUserDto {
+export class UpdateUserDto {
     name: string;
 }
 
-class CreateUserDto {
+export class CreateUserDto {
     // @IsNotEmpty()
     email: string;
     name: string;
     password: string;
 }
 
-class UserDto {
+export class UserDto {
     id: string;
     email: string;
     name: string;
@@ -21,12 +21,4 @@ class UserDto {
         let userDto: UserDto = { id, email, name };
         return userDto;
     }
-}
-
-
-
-export {
-    UpdateUserDto,
-    UserDto,
-    CreateUserDto
 }
