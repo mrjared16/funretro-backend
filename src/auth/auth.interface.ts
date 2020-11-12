@@ -1,7 +1,7 @@
-import { UserDto } from 'src/users/users.dto';
+import { UserDTO } from 'src/users/users.dto';
 
 export interface RequestWithUser extends Request {
-    user: UserDto;
+    user: UserDTO;
 }
 
 export interface RequestWithToken extends Request {

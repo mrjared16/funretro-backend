@@ -1,24 +1,24 @@
 import { UserEntity } from './users.entity';
-export class UpdateUserDto {
+export class UpdateUserDTO {
     name: string;
 }
 
-export class CreateUserDto {
+export class CreateUserDTO {
     // @IsNotEmpty()
     email: string;
     name: string;
     password: string;
 }
 
-export class UserDto {
+export class UserDTO {
     id: string;
     email: string;
     name: string;
-    static EntityToDTO(userEntity: UserEntity): UserDto {
+    static EntityToDTO(userEntity: UserEntity): UserDTO {
         if (userEntity == null)
             return null;
         const { id, email, name } = userEntity;
-        let userDto: UserDto = { id, email, name };
-        return userDto;
+        let userDTO: UserDTO = { id, email, name };
+        return userDTO;
     }
 }

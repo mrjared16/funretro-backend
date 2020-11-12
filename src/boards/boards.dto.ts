@@ -1,4 +1,4 @@
-import { UserDto } from 'src/users/users.dto';
+import { UserDTO } from 'src/users/users.dto';
 
 export abstract class BoardDTO {
     id: string;

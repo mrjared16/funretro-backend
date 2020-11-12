@@ -1,7 +1,7 @@
-import { UserDto } from 'src/users/users.dto';
+import { UserDTO } from 'src/users/users.dto';
 
 export interface UpdateUserResponse  {
     response: {
-        user: UserDto
+        user: UserDTO
     }
 }

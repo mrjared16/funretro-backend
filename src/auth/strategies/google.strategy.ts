@@ -1,4 +1,4 @@
-import { UserDto } from 'src/users/users.dto';
+import { UserDTO } from 'src/users/users.dto';
 import { AuthService } from './../auth.service';
 import { Config } from 'src/shared/config';
 import { Injectable } from '@nestjs/common';
@@ -19,7 +19,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             email: emails[0].value
         }
 
-        const user: UserDto = await this.authService.loginWithGoogleOAuth(userPayload);
+        const user: UserDTO = await this.authService.loginWithGoogleOAuth(userPayload);
         callback(null, user);
     }
 }

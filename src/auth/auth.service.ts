@@ -8,7 +8,7 @@ import { UserEntity } from 'src/users/users.entity';
 import { JWTPayload } from './auth.interface';
 
 import { create } from 'domain';
-import { UserDto, CreateUserDto } from 'src/users/users.dto';
+import { UserDTO, CreateUserDTO } from 'src/users/users.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +17,7 @@ export class AuthService {
         private jwtService: JwtService
     ) { }
 
-    getToken({ email, id }: UserDto) {
+    getToken({ email, id }: UserDTO) {
         const payload: JWTPayload = {
             email,
             userId: id
@@ -39,7 +39,7 @@ export class AuthService {
         return newUser;
     }
 
-    login(user: UserDto) {
+    login(user: UserDTO) {
         if (user == null) {
             return;
         }

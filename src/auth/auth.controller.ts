@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 import { Controller, Request, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RequestWithUser, RequestWithOAuthPayload } from './auth.interface';
-import { CreateUserDto } from 'src/users/users.dto';
+import { CreateUserDTO } from 'src/users/users.dto';
 import { LoginResponse } from './auth.interface';
 
 @Controller('auth')
@@ -17,7 +17,7 @@ export class AuthController {
     ) { }
 
     @Post('register')
-    async register(@Body() registrationData: CreateUserDto) {
+    async register(@Body() registrationData: CreateUserDTO) {
         return await this.userService.createUser(registrationData);
     }
 

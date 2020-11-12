@@ -2,7 +2,7 @@ import { UserEntity } from './users.entity';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm/dist';
-import { CreateUserDto, UpdateUserDto, UserDto } from "./users.dto";
+import { CreateUserDTO, UpdateUserDTO, UserDTO } from "./users.dto";
 import { RequestWithToken } from 'src/auth/auth.interface';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class UserService {
         private userRepository: Repository<UserEntity>) {
     }
 
-    async validateUser(email: string, password: string): Promise<UserDto> {
+    async validateUser(email: string, password: string): Promise<UserDTO> {
         const user = await this.userRepository.findOne({ where: { email } });
         if (!user) {
             throw new HttpException('Wrong email or password ', HttpStatus.BAD_REQUEST);
@@ -22,15 +22,15 @@ export class UserService {
         if (!isPasswordMatching) {
             throw new HttpException('Wrong email or password ', HttpStatus.BAD_REQUEST);
         }
-        return UserDto.EntityToDTO(user);
+        return UserDTO.EntityToDTO(user);
     }
 
     async findUser(payload: { email?: string, id?: string } = {}) {
         const user = await this.userRepository.findOne({ where: payload });
-        return UserDto.EntityToDTO(user);
+        return UserDTO.EntityToDTO(user);
     }
 
-    async createUser(data: CreateUserDto): Promise<UserDto> {
+    async createUser(data: CreateUserDTO): Promise<UserDTO> {
         const { email, name, password } = data;
 
         const userWithThisEmail = await this.userRepository.findOne({ where: { email } });
@@ -40,15 +40,15 @@ export class UserService {
 
         let newUser = await this.userRepository.create({ email, name, password });
         await this.userRepository.save(newUser);
-        return UserDto.EntityToDTO(newUser);
+        return UserDTO.EntityToDTO(newUser);
     }
 
-    async updateUser(id: string, newUserInfo: UpdateUserDto): Promise<UserDto> {
+    async updateUser(id: string, newUserInfo: UpdateUserDTO): Promise<UserDTO> {
         try {
             await this.userRepository.update({ id }, newUserInfo);
 
             const user = await this.userRepository.findOne({ id });
-            return UserDto.EntityToDTO(user);
+            return UserDTO.EntityToDTO(user);
         } catch (e) {
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
