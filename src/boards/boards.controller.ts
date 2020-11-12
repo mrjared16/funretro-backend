@@ -1,22 +1,34 @@
+import { JWTAuthenticationGuard } from './../auth/guards/jwt.guard';
+import { RequestWithToken } from './../auth/auth.interface';
+import { CardService } from './../cards/cards.service';
+import { ListService } from './../lists/lists.service';
+import { ListDTO } from 'src/lists/lists.dto';
 import { BoardResponse, ViewBoardResponse } from './boards.interface';
-import { BoardDTO, CreateBoardDTO, UpdateBoardDTO } from './boards.dto';
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { BoardDTO, CreateBoardDTO, UpdateBoardDTO, BoardData } from './boards.dto';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
 import { BoardService } from "./boards.service";
 
 @Controller('boards')
 export class BoardController {
-    constructor(private readonly boardService: BoardService) {
+    constructor(private readonly boardService: BoardService,
+        private readonly listService: ListService,
+        private readonly cardService: CardService
+    ) {
 
     }
 
     @Post()
-    async createBoard(@Body() boardData: CreateBoardDTO): Promise<BoardResponse> {
-        // get lists info from template [{name: 'To do', color: '#000'}, {name: 'Doing', color: '#100'}, {name: 'Done', color: '#010'}]
-
+    @UseGuards(JWTAuthenticationGuard)
+    async createBoard(@Req() request: RequestWithToken, @Body() boardData: CreateBoardDTO): Promise<BoardResponse> {
         // create board
+        const { user } = request;
+        const { userId } = user;
+        const board: BoardDTO = await this.boardService.createBoard(boardData, userId);
 
         // create lists
-        const board: BoardDTO = null;
+        const { idBoardTemplate } = boardData;
+        const lists: ListDTO[] = await this.listService.createListsFromTemplate(idBoardTemplate, board.id);
+
         return {
             response: {
                 board
@@ -41,6 +53,6 @@ export class BoardController {
 
     @Delete('/:id')
     async deleteBoard() {
-        
+
     }
 }
