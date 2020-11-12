@@ -8,6 +8,7 @@ import { Module } from '@nestjs/common';
 @Module({
     imports: [TypeOrmModule.forFeature([CardEntity])],
     providers: [CardService],
-    controllers: [CardController]
+    controllers: [CardController],
+    exports: [CardService]
 })
 export class CardModule { }

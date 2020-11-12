@@ -7,6 +7,7 @@ import { Module } from "@nestjs/common";
 @Module({
     imports: [TypeOrmModule.forFeature([ListEntity])],
     providers: [ListService],
-    controllers: [ListController]
+    controllers: [ListController],
+    exports: [ListService]
 })
 export class ListModule { }
