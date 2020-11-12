@@ -1,3 +1,4 @@
+import { CardEntity } from 'src/cards/cards.entity';
 
 export abstract class CardDTO {
     id: string;
@@ -5,6 +6,13 @@ export abstract class CardDTO {
     idList: string;
     name: string;
     pos: number;
+
+    static EntityToDTO(card: CardEntity) {
+        const { id, list, name, pos } = card;
+        const [idBoard, idList] = [list.board.id, list.id];
+        const cardDTO: CardDTO = { id, idBoard, idList, name, pos }
+        return cardDTO;
+    }
 }
 
 export class UpdateCardDTO {

@@ -85,10 +85,11 @@ class ConfigService {
         };
     }
 
-    public getCurrentHost(): { host: string, port: string } {
+    public getCurrentHost(): { host: string, port: string, hostUrl: string } {
         return {
             host: (this.currentConfig as any).host,
-            port: (this.currentConfig as any).port
+            port: (this.currentConfig as any).port,
+            hostUrl: `http://${(this.currentConfig as any).host}:${(this.currentConfig as any).port}`
         }
     }
 }
