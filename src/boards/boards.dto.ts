@@ -18,8 +18,11 @@ export abstract class BoardDTO {
     }
 }
 
-export class CreateBoardDTO {
+export class BoardData {
     name: string;
+}
+
+export class CreateBoardDTO extends BoardData {
     idBoardTemplate?: string;
 }
 

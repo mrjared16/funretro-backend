@@ -16,15 +16,18 @@ export abstract class ListDTO {
 }
 
 
-export class UpdateListDTO {
-    pos?: number;
-    name?: string;
-    color?: string;
-}
-
-export class CreateListDTO {
-    idBoard: string;
+export class ListData {
     name: string;
     pos: number;
     color?: string;
+}
+
+export class UpdateListDTO implements Partial<ListData> {
+    // pos?: number;
+    // name?: string;
+    // color?: string;
+}
+
+export class CreateListDTO extends ListData {
+    idBoard: string;
 }
