@@ -1,5 +1,6 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcryptjs';
+import { BoardEntity } from "src/boards/boards.entity";
 
 @Entity('user')
 export abstract class UserEntity {
@@ -23,6 +24,11 @@ export abstract class UserEntity {
 
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
+
+
+    @OneToMany(() => BoardEntity, board => board.id)
+    boards: BoardEntity[];
+
 
     @BeforeInsert()
     async hashPassword() {
