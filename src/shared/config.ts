@@ -33,7 +33,8 @@ class ConfigService {
             'jwt': {
                 'secret': this.env.JWT_SECRET,
                 'signOptions': {
-                    expiresIn: '3600s'
+                    // TODO: handle expire token
+                    // expiresIn: '3600s'
                 }
             },
             'host': this.env.HOST,
