@@ -57,9 +57,10 @@ export class BoardController {
         return null;
     }
 
-    @Patch('/:id')
-    async updateBoard(@Body() updateData: UpdateBoardDTO): Promise<BoardResponse> {
-        const board: BoardDTO = null;
+    @Patch(':id')
+    @UseGuards(JWTAuthenticationGuard)
+    async updateBoard(@Param('id') id: string, @Body() updateData: UpdateBoardDTO): Promise<BoardResponse> {
+        const board: BoardDTO = await this.boardService.updateBoard(id, updateData);
         return {
             response: {
                 board

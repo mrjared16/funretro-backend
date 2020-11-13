@@ -27,6 +27,9 @@ export class CreateBoardDTO extends BoardData {
 }
 
 export class UpdateBoardDTO {
+    /** change name */
     name?: string;
+
+    /** share board */
     permissionLevel?: PermissionLevel;
 }
