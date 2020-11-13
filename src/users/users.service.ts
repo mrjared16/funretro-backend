@@ -45,9 +45,13 @@ export class UserService {
 
     async updateUser(id: string, newUserInfo: UpdateUserDTO): Promise<UserDTO> {
         try {
-            await this.userRepository.update({ id }, newUserInfo);
-
             const user = await this.userRepository.findOne({ id });
+
+            const { name } = newUserInfo;
+            Object.assign(user, { name });
+
+            await this.userRepository.save(user);
+
             return UserDTO.EntityToDTO(user);
         } catch (e) {
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
