@@ -36,6 +36,9 @@ export abstract class BoardEntity {
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 
+    @Column({nullable: false})
+    userId: string;
+
     @ManyToOne(() => UserEntity, user => user.id)
     user: UserEntity;
 

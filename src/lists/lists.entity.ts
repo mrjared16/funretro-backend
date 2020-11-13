@@ -26,7 +26,7 @@ export abstract class ListEntity {
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     boardId: string;
 
     @ManyToOne(() => BoardEntity, board => board.id)
