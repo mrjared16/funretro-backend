@@ -38,8 +38,9 @@ export class UserService {
             throw new HttpException('Username already exists', HttpStatus.BAD_REQUEST);
         }
 
-        let newUser = await this.userRepository.create({ email, name, password });
-        await this.userRepository.save(newUser);
+        let user = await this.userRepository.create({ email, name, password });
+        
+        const newUser = await this.userRepository.save(user);
         return UserDTO.EntityToDTO(newUser);
     }
 
