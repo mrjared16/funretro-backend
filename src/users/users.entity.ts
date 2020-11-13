@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcryptjs';
 import { BoardEntity } from "src/boards/boards.entity";
 
@@ -30,6 +30,7 @@ export abstract class UserEntity {
     boards: BoardEntity[];
 
 
+    @BeforeUpdate()
     @BeforeInsert()
     async hashPassword() {
         if (this.password) {
