@@ -46,15 +46,21 @@ export class UserService {
     async updateUser(id: string, newUserInfo: UpdateUserDTO): Promise<UserDTO> {
         try {
             const user = await this.userRepository.findOne({ id });
-
-            const { name } = newUserInfo;
+            if (!user) {
+                throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+            }
+            const { name } = { ...user, ...newUserInfo };
             Object.assign(user, { name });
 
             await this.userRepository.save(user);
 
             return UserDTO.EntityToDTO(user);
         } catch (e) {
-            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+            if (e && e instanceof HttpException) {
+                throw e;
+            }
+            console.log({ Exeception: e });
+            throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
         }
     }
 }

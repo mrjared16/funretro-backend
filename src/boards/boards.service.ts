@@ -33,7 +33,7 @@ export class BoardService {
             if (!board) {
                 throw new HttpException('Board not found', HttpStatus.NOT_FOUND);
             }
-            
+
             const { name, permissionLevel } = { ...board, ...newBoardData };
             Object.assign(board, { name, permissionLevel });
 
@@ -44,10 +44,7 @@ export class BoardService {
             if (e && e instanceof HttpException) {
                 throw e;
             }
-            else {
-                console.log({ Exeception: e });
-            }
-
+            console.log({ Exeception: e });
             throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
         }
     }
