@@ -55,28 +55,18 @@ export class ListService {
 
     async updateList(id: string, data: UpdateListDTO): Promise<ListDTO> {
         try {
-            console.log({ id, data });
-            const list = await this.listRepository.findOne({ id: id }, { loadRelationIds: { relations: ['board'] } });
+            const list = await this.listRepository.findOne({ id: id });
             // const list = await this.listRepository.createQueryBuilder('list')
-            //     .leftJoinAndSelect('list.board', 'board')
-            //     .where('list.id = :id', { id })
-            //     .getQuery();
-            // const list = await this.listRepository.createQueryBuilder('list')
-            //     .leftJoinAndSelect('list."boardId"', '"boardId"')
             //     .where('list.id = :id', { id })
             //     .getOne();
-            const board = { id: list.board as any };
-            list.board = board as BoardEntity;
-            console.log({ list });
             if (!list) {
                 throw new HttpException('List not found', HttpStatus.NOT_FOUND);
             }
 
             const { name, pos, color } = { ...list, ...data };
-            Object.assign(list, { name, pos, color });
+            Object.assign(list, { name, pos, color, board: { id: list.boardId } as BoardEntity });
 
             const newList = await this.listRepository.save(list);
-            console.log({ list, newList });
 
             return ListDTO.EntityToDTO(newList);
         } catch (Exception) {
