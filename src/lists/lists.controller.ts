@@ -5,6 +5,7 @@ import { ListDTO, UpdateListDTO } from 'src/lists/lists.dto';
 import { ListService } from './lists.service';
 import { Controller, Param, Patch, Post } from '@nestjs/common';
 import { ListResponse } from './lists.interface';
+import { DeleteResponse } from 'src/shared/interface';
 
 @Controller('lists')
 export class ListController {
@@ -14,7 +15,7 @@ export class ListController {
 
     @Post()
     @UseGuards(JWTAuthenticationGuard)
-    async createList(@Body() listData: CreateListDTO ): Promise<ListResponse> {
+    async createList(@Body() listData: CreateListDTO): Promise<ListResponse> {
         const list: ListDTO = await this.listService.createList(listData);
         return {
             response: {
@@ -23,9 +24,10 @@ export class ListController {
         }
     }
 
-    @Patch('/:id')
+    @Patch(':id')
+    @UseGuards(JWTAuthenticationGuard)
     async updateList(@Param('id') id: string, @Body() updateData: UpdateListDTO): Promise<ListResponse> {
-        const list: ListDTO = null;
+        const list: ListDTO = await this.listService.updateList(id, updateData);
         return {
             response: {
                 list
@@ -33,8 +35,14 @@ export class ListController {
         }
     }
 
-    @Delete('/:id')
-    async deleteList(@Param('id') id: string) {
-        
+    @Delete(':id')
+    @UseGuards(JWTAuthenticationGuard)
+    async deleteList(@Param('id') id: string): Promise<DeleteResponse> {
+        const isSuccess = await this.listService.deleteList(id);
+        return {
+            response: {
+                message: (isSuccess ? 'Success' : 'Fail')
+            }
+        }
     }
 }
