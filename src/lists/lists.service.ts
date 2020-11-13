@@ -16,11 +16,11 @@ export class ListService {
     }
 
     async createList(data: CreateListDTO): Promise<ListDTO> {
-        const { name, color = '', pos, idBoard } = data;
+        const { name, color, pos, idBoard } = data;
         const board = { id: idBoard };
 
-        const newList = this.listRepository.create({ name, color, pos, board: board as BoardEntity });
-        this.listRepository.save(newList);
+        const list = this.listRepository.create({ name, color, pos, board: board as BoardEntity });
+        const newList = await this.listRepository.save(list);
 
         return ListDTO.EntityToDTO(newList);
     }

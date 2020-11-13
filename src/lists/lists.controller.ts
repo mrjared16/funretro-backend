@@ -1,5 +1,6 @@
+import { JWTAuthenticationGuard } from './../auth/guards/jwt.guard';
 import { CreateListDTO } from './lists.dto';
-import { Body, Delete } from '@nestjs/common';
+import { Body, Delete, UseGuards } from '@nestjs/common';
 import { ListDTO, UpdateListDTO } from 'src/lists/lists.dto';
 import { ListService } from './lists.service';
 import { Controller, Param, Patch, Post } from '@nestjs/common';
@@ -12,8 +13,9 @@ export class ListController {
     }
 
     @Post()
+    @UseGuards(JWTAuthenticationGuard)
     async createList(@Body() listData: CreateListDTO ): Promise<ListResponse> {
-        const list: ListDTO = null;
+        const list: ListDTO = await this.listService.createList(listData);
         return {
             response: {
                 list
