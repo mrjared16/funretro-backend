@@ -17,7 +17,7 @@ export class BoardService {
     async getAllBoard(idUser: string): Promise<BoardDTO[]> {
         const boards = await this.boardRepository.createQueryBuilder('board')
             .select()
-            .where("board.userId = :userId", { userId: idUser })
+            .where('board.userId = :userId', { userId: idUser })
             .orderBy('created_at', 'ASC')
             .getMany();
 
