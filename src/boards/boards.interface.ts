@@ -9,6 +9,13 @@ export interface BoardResponse {
     }
 }
 
+export interface ViewAllBoardResponse {
+    response: {
+        boards: BoardDTO[],
+        // idUser: string
+    }
+}
+
 export interface ViewBoardResponse {
     response: {
         board: BoardDTO,

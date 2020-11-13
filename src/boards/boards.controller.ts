@@ -3,7 +3,7 @@ import { RequestWithToken } from './../auth/auth.interface';
 import { CardService } from './../cards/cards.service';
 import { ListService } from './../lists/lists.service';
 import { ListDTO } from 'src/lists/lists.dto';
-import { BoardResponse, ViewBoardResponse } from './boards.interface';
+import { BoardResponse, ViewAllBoardResponse, ViewBoardResponse } from './boards.interface';
 import { BoardDTO, CreateBoardDTO, UpdateBoardDTO, BoardData } from './boards.dto';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
 import { BoardService } from "./boards.service";
@@ -15,6 +15,22 @@ export class BoardController {
         private readonly cardService: CardService
     ) {
 
+    }
+
+
+    @Get()
+    @UseGuards(JWTAuthenticationGuard)
+    async getAllBoard(@Req() request: RequestWithToken): Promise<ViewAllBoardResponse> {
+        const { user } = request;
+        const { userId } = user;
+
+        const boards: BoardDTO[] = await this.boardService.getAllBoard(userId);
+
+        return {
+            response: {
+                boards
+            }
+        }
     }
 
     @Post()

@@ -14,6 +14,11 @@ export class BoardService {
 
     }
 
+    async getAllBoard(idUser: string): Promise<BoardDTO[]> {
+        const boards = await this.boardRepository.find({ user: { id: idUser } as UserEntity });
+        return boards.map((board) => BoardDTO.EntityToDTO(board));
+    }
+
     async createBoard(boardData: BoardData, idUser: string): Promise<BoardDTO> {
         const { name } = boardData;
         const user = { id: idUser };
