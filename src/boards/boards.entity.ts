@@ -1,6 +1,6 @@
 import { ListEntity } from 'src/lists/lists.entity';
 import { UserEntity } from 'src/users/users.entity';
-import { ManyToOne, OneToMany, UpdateDateColumn } from 'typeorm';
+import { DeleteDateColumn, ManyToOne, OneToMany, UpdateDateColumn } from 'typeorm';
 import { CreateDateColumn } from 'typeorm';
 import { PrimaryGeneratedColumn } from 'typeorm';
 import { Column } from 'typeorm';
@@ -26,6 +26,9 @@ export abstract class BoardEntity {
         default: PermissionLevel.PRIVATE
     })
     permissionLevel: PermissionLevel;
+
+    @DeleteDateColumn()
+    deleted_at: Date;
 
     @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;

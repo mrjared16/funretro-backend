@@ -1,3 +1,4 @@
+import { DeleteResponse } from './../shared/interface';
 import { JWTAuthenticationGuard } from './../auth/guards/jwt.guard';
 import { RequestWithToken } from './../auth/auth.interface';
 import { CardService } from './../cards/cards.service';
@@ -52,7 +53,8 @@ export class BoardController {
         }
     }
 
-    @Get('/:id')
+    @Get(':id')
+    @UseGuards(JWTAuthenticationGuard)
     async viewBoard(@Param('id') id: string): Promise<ViewBoardResponse> {
         return null;
     }
@@ -68,8 +70,14 @@ export class BoardController {
         }
     }
 
-    @Delete('/:id')
-    async deleteBoard() {
-
+    @Delete(':id')
+    @UseGuards(JWTAuthenticationGuard)
+    async deleteBoard(@Param('id') id: string) : Promise<DeleteResponse> {
+        const isSuccess = await this.boardService.deleteBoard(id);
+        return {
+            response: {
+                message: (isSuccess ? 'Success' : 'Fail')
+            }
+        }
     }
 }

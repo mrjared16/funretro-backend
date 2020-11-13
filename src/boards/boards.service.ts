@@ -48,4 +48,12 @@ export class BoardService {
             throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
         }
     }
+
+    async deleteBoard(idBoard: string): Promise<boolean> {
+        const response = await this.boardRepository.softDelete({ id: idBoard });
+        // const response = await this.boardRepository.restore({ id: idBoard });
+        // console.log({ response });
+        const { affected } = response;
+        return (affected > 0)
+    }
 }
