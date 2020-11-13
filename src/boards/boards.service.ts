@@ -1,5 +1,5 @@
 import { UserEntity } from 'src/users/users.entity';
-import { Repository } from 'typeorm';
+import { createQueryBuilder, Repository } from 'typeorm';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { BoardData, BoardDTO, UpdateBoardDTO } from './boards.dto';
 import { BoardEntity } from './boards.entity';
@@ -15,7 +15,12 @@ export class BoardService {
     }
 
     async getAllBoard(idUser: string): Promise<BoardDTO[]> {
-        const boards = await this.boardRepository.find({ user: { id: idUser } as UserEntity });
+        const boards = await this.boardRepository.createQueryBuilder('board')
+            .select()
+            .where("board.userId = :userId", { userId: idUser })
+            .orderBy('created_at', 'ASC')
+            .getMany();
+
         return boards.map((board) => BoardDTO.EntityToDTO(board));
     }
 
