@@ -1,3 +1,6 @@
+import { ListEntity } from 'src/lists/lists.entity';
+import { CardDTO } from 'src/cards/cards.dto';
+import { ListDTO } from 'src/lists/lists.dto';
 import { Config } from 'src/shared/config';
 import { BoardEntity } from 'src/boards/boards.entity';
 import { PermissionLevel } from './boards.entity';
@@ -10,11 +13,50 @@ export abstract class BoardDTO {
     permissionLevel: PermissionLevel;
 
     static EntityToDTO(board: BoardEntity) {
+        return this.convertToDTO(board);
+    }
+
+    protected static convertToDTO(board: BoardEntity) {
         const { id, name, permissionLevel } = board;
+
         const { hostUrl } = Config.getCurrentHost();
         const url = `${hostUrl}/boards/${id}`;
+
         const boardDTO: BoardDTO = { id, name, permissionLevel, url };
         return boardDTO;
+    }
+}
+export abstract class BoardDetailDTO extends BoardDTO {
+
+    lists: ListDTO[]
+    cards: CardDTO[]
+    members: {
+        id: string,
+        idMember: string,
+        memberType: 'owner' | 'member',
+    }[]
+
+    protected static convertToDTO(board: BoardEntity) {
+        const boardDTO: BoardDTO = BoardDTO.EntityToDTO(board);
+        // const { id, name, permissionLevel } = board;
+
+        // const { hostUrl } = Config.getCurrentHost();
+        // const url = `${hostUrl}/boards/${id}`;
+
+        const lists = (board.lists ? board.lists.map(list => ListDTO.EntityToDTO({ ...list, board: { id: boardDTO.id } as BoardEntity })) : undefined);
+
+        const cards = (board.lists ? board.lists.reduce((memo, cur) => {
+            if (cur != null && cur.cards != null) {
+                return memo.concat(cur.cards.map(card => CardDTO.EntityToDTO({ ...card, list: { id: cur.id, board: { id: boardDTO.id } } as ListEntity })));
+            }
+            return memo;
+        }, []) : undefined);
+
+        const members = [];
+
+        const boardDetailDTO: BoardDetailDTO = { ...boardDTO, lists, cards, members };
+        // const boardDetailDTO: BoardDetailDTO = { id, name, permissionLevel, url, lists, cards, members };
+        return boardDetailDTO;
     }
 }
 
