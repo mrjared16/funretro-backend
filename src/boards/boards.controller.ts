@@ -56,7 +56,13 @@ export class BoardController {
     @Get(':id')
     @UseGuards(JWTAuthenticationGuard)
     async viewBoard(@Param('id') id: string): Promise<ViewBoardResponse> {
-        return null;
+        const board = await this.boardService.getBoard(id);
+        return {
+            response: {
+                board
+            }
+        };
+
     }
 
     @Patch(':id')
@@ -72,7 +78,7 @@ export class BoardController {
 
     @Delete(':id')
     @UseGuards(JWTAuthenticationGuard)
-    async deleteBoard(@Param('id') id: string) : Promise<DeleteResponse> {
+    async deleteBoard(@Param('id') id: string): Promise<DeleteResponse> {
         const isSuccess = await this.boardService.deleteBoard(id);
         return {
             response: {
