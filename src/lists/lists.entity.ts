@@ -10,8 +10,8 @@ export abstract class ListEntity {
 
     @Column()
     name: string;
-    
-    @Column({ default: '111', nullable: false})
+
+    @Column({ default: '111', nullable: false })
     color: string;
 
     @Column({ type: 'float', default: 0 })
@@ -19,7 +19,7 @@ export abstract class ListEntity {
 
     @DeleteDateColumn()
     delete_at: Date;
-    
+
     @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;
 
@@ -29,9 +29,9 @@ export abstract class ListEntity {
     @Column({ nullable: false })
     boardId: string;
 
-    @ManyToOne(() => BoardEntity, board => board.id)
+    @ManyToOne(() => BoardEntity, board => board.lists)
     board: BoardEntity;
-    
-    @OneToMany(() => CardEntity, card => card.id)
+
+    @OneToMany(() => CardEntity, card => card.list)
     cards: CardEntity[];
 }

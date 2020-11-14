@@ -26,7 +26,7 @@ export abstract class UserEntity {
     updated_at: Date;
 
 
-    @OneToMany(() => BoardEntity, board => board.id)
+    @OneToMany(() => BoardEntity, board => board.user)
     boards: BoardEntity[];
 
 

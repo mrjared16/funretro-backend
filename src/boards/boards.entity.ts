@@ -36,12 +36,12 @@ export abstract class BoardEntity {
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 
-    @Column({nullable: false})
+    @Column({ nullable: false })
     userId: string;
 
-    @ManyToOne(() => UserEntity, user => user.id)
+    @ManyToOne(() => UserEntity, user => user.boards)
     user: UserEntity;
 
-    @OneToMany(() => ListEntity, list => list.id)
+    @OneToMany(() => ListEntity, list => list.board)
     lists: ListEntity[];
 }

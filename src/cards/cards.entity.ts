@@ -22,10 +22,10 @@ export abstract class CardEntity {
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 
-    @Column({nullable: false})
+    @Column({ nullable: false })
     listId: string;
 
 
-    @ManyToOne(() => ListEntity, list => list.id)
+    @ManyToOne(() => ListEntity, list => list.cards)
     list: ListEntity;
 }
