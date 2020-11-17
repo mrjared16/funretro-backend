@@ -42,16 +42,20 @@ export abstract class BoardDetailDTO extends BoardDTO {
 
         // const { hostUrl } = Config.getCurrentHost();
         // const url = `${hostUrl}/boards/${id}`;
+        let lists, cards;
+        if (board.lists) {
+            const filteredLists = board.lists.filter(list => list.delete_at == null);
+            lists = filteredLists.map(list => ListDTO.EntityToDTO({ ...list, board: { id: boardDTO.id } as BoardEntity }));
 
-        const lists = (board.lists ? board.lists.map(list => ListDTO.EntityToDTO({ ...list, board: { id: boardDTO.id } as BoardEntity })) : undefined);
 
-        const cards = (board.lists ? board.lists.reduce((memo, cur) => {
-            if (cur != null && cur.cards != null) {
-                return memo.concat(cur.cards.map(card => CardDTO.EntityToDTO({ ...card, list: { id: cur.id, board: { id: boardDTO.id } } as ListEntity })));
-            }
-            return memo;
-        }, []) : undefined);
-
+            cards = filteredLists.reduce((memo, cur) => {
+                if (cur != null && cur.cards != null) {
+                    const filteredCards = cur.cards.filter(card => card.delete_at == null);
+                    return memo.concat(filteredCards.map(card => CardDTO.EntityToDTO({ ...card, list: { id: cur.id, board: { id: boardDTO.id } } as ListEntity })));
+                }
+                return memo;
+            }, []);
+        }
         const members = [];
 
         const boardDetailDTO: BoardDetailDTO = { ...boardDTO, lists, cards, members };

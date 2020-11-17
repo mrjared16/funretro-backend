@@ -65,10 +65,6 @@ export class CardService {
     async deleteCard(id: string): Promise<boolean> {
         const response = await this.cardRepository.softDelete({ id });
         // const response = await this.cardRepository.restore({ id });
-        const test = await this.cardRepository.findOne({ id });
-        const test2 = await this.cardRepository.createQueryBuilder('card').where('card.id = :id', { id: id }).getOne();
-
-        console.log({ test, test2 });
         const { affected } = response;
         return (affected > 0);
     }

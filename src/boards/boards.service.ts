@@ -24,18 +24,27 @@ export class BoardService {
         return boards.map((board) => BoardDTO.EntityToDTO(board));
     }
 
-    async getBoard(idBoard: string): Promise<BoardDetailDTO>{
+    async getBoard(idBoard: string): Promise<BoardDetailDTO> {
+        // const boardEntity = await this.boardRepository.findOne({ id: idBoard }, { relations: ['lists', 'lists.cards']})
         const boardEntity = await this.boardRepository.createQueryBuilder('board')
             .leftJoinAndSelect('board.lists', 'list')
             .leftJoinAndSelect('list.cards', 'card')
             .where('board.id = :id', { id: idBoard })
-            .andWhere('card.delete_at IS NULL')
-            .andWhere('list.delete_at IS NULL')
             .orderBy({
                 'list.pos': 'ASC',
                 'card.pos': 'ASC'
             })
             .getOne();
+        //TypeOrm doesnot support outer join => manual filter in DTOs
+        // const test = await this.boardRepository.query(`
+        // SELECT "board"."id" AS "board_id", "board"."name" AS "board_name", "board"."permissionLevel" AS "board_permissionLevel", "board"."deleted_at" AS "board_deleted_at", "board"."created_at" AS "board_created_at", "board"."updated_at" AS "board_updated_at", "board"."userId" AS "board_userId", 
+        //     "list"."id" AS "list_id", "list"."name" AS "list_name", "list"."color" AS "list_color", "list"."pos" AS "list_pos", "list"."delete_at" AS "list_delete_at", "list"."created_at" AS "list_created_at", "list"."updated_at" AS "list_updated_at", "list"."boardId" AS "list_boardId",
+        //     "card"."id" AS "card_id", "card"."name" AS "card_name", "card"."pos" AS "card_pos", "card"."delete_at" AS "card_delete_at", "card"."created_at" AS "card_created_at", "card"."updated_at" AS "card_updated_at", "card"."listId" AS "card_listId"
+        // FROM "board" "board" 
+        //     FULL OUTER JOIN "list" "list" ON "list"."boardId"="board"."id" AND "list"."delete_at" IS NULL
+        //     FULL OUTER JOIN "card" "card" ON "card"."listId"="list"."id" AND "card"."delete_at" IS NULL
+        // WHERE ( "board"."id" = $1 AND "board"."deleted_at" IS NULL) ORDER BY "list"."pos" ASC, "card"."pos" ASC
+        // `, [idBoard]);
         const boardDTO = BoardDetailDTO.EntityToDTO(boardEntity);
         return boardDTO as BoardDetailDTO;
     }

@@ -78,8 +78,8 @@ export class ListService {
     }
 
     async deleteList(id: string): Promise<boolean> {
-        // const response = await this.listRepository.softDelete({ id });
-        const response = await this.listRepository.restore({ id });
+        const response = await this.listRepository.softDelete({ id });
+        // const response = await this.listRepository.restore({ id });
         const { affected } = response;
         return (affected > 0);
     }
