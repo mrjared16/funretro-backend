@@ -29,6 +29,8 @@ export class BoardService {
             .leftJoinAndSelect('board.lists', 'list')
             .leftJoinAndSelect('list.cards', 'card')
             .where('board.id = :id', { id: idBoard })
+            .andWhere('card.delete_at IS NULL')
+            .andWhere('list.delete_at IS NULL')
             .orderBy({
                 'list.pos': 'ASC',
                 'card.pos': 'ASC'
