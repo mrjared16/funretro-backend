@@ -17,7 +17,7 @@ export class UserDTO {
     static EntityToDTO(userEntity: UserEntity): UserDTO {
         if (userEntity == null)
             return null;
-        const { id, email, name } = userEntity;
+        const { id, email, name } = userEntity || {};
         let userDTO: UserDTO = { id, email, name };
         return userDTO;
     }

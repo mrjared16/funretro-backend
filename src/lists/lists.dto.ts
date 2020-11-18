@@ -8,7 +8,9 @@ export abstract class ListDTO {
     pos: number;
 
     static EntityToDTO(list: ListEntity) {
-        const { id, board, color, name, pos } = list;
+        if (list == null)
+            return null;
+        const { id, board, color, name, pos } = list || {};
         const [idBoard] = [board.id];
         const listDTO: ListDTO = { id, idBoard, name, color, pos }
         return listDTO;

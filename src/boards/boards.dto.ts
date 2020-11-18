@@ -13,6 +13,8 @@ export abstract class BoardDTO {
     permissionLevel: PermissionLevel;
 
     static EntityToDTO(board: BoardEntity) {
+        if (board == null)
+            return null;
         return this.convertToDTO(board);
     }
 

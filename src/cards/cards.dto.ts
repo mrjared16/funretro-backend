@@ -9,6 +9,8 @@ export abstract class CardDTO {
     pos: number;
 
     static EntityToDTO(card: CardEntity) {
+        if (card == null)
+            return null;
         const { id, list, name, pos, listId } = card;
         const [idBoard, idList] = [list.board?.id, listId];
         const cardDTO: CardDTO = { id, idBoard, idList, name, pos }
