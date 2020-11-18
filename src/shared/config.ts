@@ -45,7 +45,8 @@ class ConfigService {
         }
     }
 
-    private readonly currentConfig = this.configs[this.node_env];
+    private readonly currentConfig = this.configs['development'];
+    // private readonly currentConfig = this.configs[this.node_env];
     
     private getJWTSecret() {
         return (this.currentConfig as any).jwt.secret;
